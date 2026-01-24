@@ -37,8 +37,56 @@ model Category {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  products  Product[]
 
   @@map("categories")
 }
 
+model Product {
+  id          String    @id @default(uuid())
+  name        String
+  description String
+  price       Float
+  banner      String
+  
+  categoryId  String
+  category    Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
+  disabled    Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("products")
+  items      Item[]
+}
+
+model Order {
+  id         String    @id @default(uuid())
+  table      Int
+  status     Boolean   @default(false)
+  draft      Boolean   @default(true)
+  name       String
+
+  items      Item[]
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@map("orders")
+}
+
+model Item {
+  id         String    @id @default(uuid())
+  amount     Int
+
+  orderId    String
+  order      Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  productId  String
+  product    Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@map("items")
+}
