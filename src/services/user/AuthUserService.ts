@@ -16,14 +16,14 @@ class AuthUserService {
     });
 
     if (!user) {
-      throw new Error("Email/Senha é obrigatório");
+      throw new Error("Email ou Senha incorretos");
     }
 
     // Verificar a senha 
     const passwordMatch = await compare(password, user.password);
 
     if (!passwordMatch) {
-      throw new Error("Email/Senha é obrigatório");
+      throw new Error("Email ou Senha incorretos");
     }
 
     // gera token
