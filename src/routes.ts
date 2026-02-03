@@ -6,12 +6,32 @@ import { AuthUserController } from "./controllers/users/AuthUserController";
 import { DetailUserController } from "./controllers/users/DetailUserController";
 import { isAuthenticated } from "./middlewares/isAuthenticated";
 import { CreateCategoryController } from "./controllers/category/CreateCategoryController";
+import { isAdmin } from "./middlewares/isAdmin";
+import { CreateCategorySchema } from "./schemas/categoryScema";
 
  const router = Router();
 
- router.post("/users", validateSchema(CreateUserSchema), new CreateUserController().handle);
- router.post('/session', validateSchema(autUserSchema), new AuthUserController().handle);
- router.post('/me', isAuthenticated, new DetailUserController().handle);
-router.post('/category', isAuthenticated, new CreateCategoryController().handle);
+    //  criar user
+ router.post("/users", 
+    validateSchema(CreateUserSchema), 
+    new CreateUserController().handle);
+
+    // login
+ router.post('/session', 
+    validateSchema(autUserSchema), 
+    new AuthUserController().handle);
+
+    // infos do user
+ router.post('/me', 
+    isAuthenticated, 
+    new DetailUserController().handle);
+
+    // criação de categoria
+ router.post('/category', 
+    isAuthenticated, isAdmin,
+    validateSchema(CreateCategorySchema),
+    new CreateCategoryController().handle);
+
+
 
  export {router}
