@@ -1,0 +1,36 @@
+import { Response, Request, NextFunction } from "express";
+import prismaClient from "../prisma";
+
+export const isAdmin = async (res:Response, req:Request, next: NextFunction)
+:Promise<void> => {
+    const user_id = req.user_id
+
+    if(!user_id){
+         res.status(401).json({
+            error: "User sem prmissão"
+        });
+        return
+    }
+
+    const user = await prismaClient.user.findFirst({
+        where:{
+            id: user_id
+        },
+
+        if(!user){
+             res.status(401).json({
+                error: "User sem prmissão"
+            })
+            return
+        },
+
+        if(user.role !== "ADMIN"){
+            res.status(401).json({
+                error: "User sem prmissão"
+            })
+         return
+        }
+    })
+
+    next()
+}
