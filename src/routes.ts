@@ -7,7 +7,7 @@ import { DetailUserController } from "./controllers/users/DetailUserController";
 import { isAuthenticated } from "./middlewares/isAuthenticated";
 import { CreateCategoryController } from "./controllers/category/CreateCategoryController";
 import { isAdmin } from "./middlewares/isAdmin";
-import { CreateCategorySchema } from "./schemas/categoryScema";
+import { createCategorySchema } from "./schemas/categorySchema";
 
  const router = Router();
 
@@ -29,7 +29,7 @@ import { CreateCategorySchema } from "./schemas/categoryScema";
     // criação de categoria
  router.post('/category', 
     isAuthenticated, isAdmin,
-    validateSchema(CreateCategorySchema),
+    validateSchema(createCategorySchema),
     new CreateCategoryController().handle);
 
 
